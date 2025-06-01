@@ -1,21 +1,18 @@
 app_port: 8080
-appdir: "{{ ansible_user_dir }}/ds-project-2024"
+app_dir: "{{ ansible_user_dir }}/ds-project-2024"
 branch: "main"
-appuser: "{{ansible_user_id}}"
-appgroup: "{{ansible_user_gid}}"
+
+user: "{{ansible_user_id}}"
+group: "{{ansible_user_gid}}"
+
 mailhog_path: "{{ ansible_user_dir }}/bin"
 mailhog_version: v1.0.1
 smtp_port: 1025
+
 minio_download_dir: /tmp/minio.deb
 minio_dir: "{{ ansible_user_dir }}/minio"
 minio_api_port: 9000
-minio_username: Q3AM3UQ867SPQQA43P2F
-minio_password: zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG
-
-db:
-  name: "mariadb"
-  user: "myuser"
-  password: "pass12345"
+minio_console_port: 9001
 
 app:
   env:
@@ -26,7 +23,7 @@ app:
     spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.MariaDBDialect
 
     spring.mail.host: "{{ public_ip }}"
-    spring.mail.port: 1025
+    spring.mail.port: "{{ smtp_port }}"
     spring.mail.username: noreply.springboot21@gmail.com
     spring.mail.password: no-password-needed
     spring.mail.properties.mail.smtp.auth: false
@@ -38,5 +35,14 @@ app:
     minio.bucket.name: pet-adoption-app
 
 service:
-  workingdir: "{{ ansible_user_dir }}/ds-project-2024"
-  execstart: "java -jar {{ ansible_user_dir }}/ds-project-2024/target/ds-project-2024-0.0.1-SNAPSHOT.jar"
+  app:
+    workingdir: "{{ ansible_user_dir }}/ds-project-2024"
+    execstart: "java -jar {{ ansible_user_dir }}/ds-project-2024/target/ds-project-2024-0.0.1-SNAPSHOT.jar"
+  mailhog:
+    workingdir: "{{ mailhog_path }}"
+    execstart: "MailHog"
+  minio:
+    execstart: "/usr/local/bin/minio server {{ minio_dir }} --console-address :{{ minio_console_port }}"
+    env:
+      username: Q3AM3UQ867SPQQA43P2F
+      password: zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG

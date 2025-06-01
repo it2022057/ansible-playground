@@ -8,7 +8,7 @@
         file:
           path: "{{ mailhog_path }}"
           state: directory
-          mode: '0775'
+          mode: '0775' # Gives execute permissions (rwxrwxr-)
         tags:
           - edit
 
@@ -22,7 +22,7 @@
       - name: Make it executable
         file:
           path: "{{ mailhog_path }}/MailHog"
-          mode: '0775'
+          mode: '0775' # Gives execute permissions (rwxrwxr-x)
         tags:
           - edit
 

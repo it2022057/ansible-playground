@@ -3,11 +3,11 @@ Description=MinIO service
 After=network.target
 
 [Service]
-User={{ ansible_user_id }}
-Group={{ ansible_user_gid }}
-ExecStart=/usr/local/bin/minio server {{ minio_dir }} --console-address ":9001"
-Environment="MINIO_ROOT_USER={{ minio_username }}"
-Environment="MINIO_ROOT_PASSWORD={{ minio_password }}"
+User={{ user }}
+Group={{ group }}
+ExecStart={{ service.minio.execstart }}
+Environment="MINIO_ROOT_USER={{ service.minio.username }}"
+Environment="MINIO_ROOT_PASSWORD={{ service.minio.password }}"
 LimitNOFILE=65536
 
 [Install]

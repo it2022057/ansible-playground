@@ -1,5 +1,6 @@
 ---
-- import_playbook: mariaDB.yaml
+# This playbook sets up all the necessary components for the project all together wthout the need to run each playbook separately
+# - import_playbook: mariaDB.yaml
 - import_playbook: spring.yaml
 - import_playbook: mailhog.yaml
 - import_playbook: minIO.yaml
