@@ -1,0 +1,5 @@
+---
+- import_playbook: mariaDB.yaml
+- import_playbook: spring.yaml
+- import_playbook: mailhog.yaml
+- import_playbook: minIO.yaml
