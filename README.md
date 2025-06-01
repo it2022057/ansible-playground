@@ -49,7 +49,7 @@ With https (keep in mind it will ask for credentials because it is a private rep
 ```bash
 git clone https://github.com/it2022057/ansible-playground.git
 ```
-or with ssh key (if you have)
+or with ssh key (if you have one)
 ```bash
 git clone git@github.com:it2022057/ansible-playground.git
 ```
@@ -84,7 +84,7 @@ ansible-playbook playbook/minIO.yaml -l devops-vm-2
 
 ## Public Ip's
 
-### If everything run successfully, go to the public ip your vm servers have and then check for the results!!! For my project go to:
+### If everything ran successfully, go to the public ip your vm servers have and then check for the results!!! For my project go to:
 
 * db-server
 ```bash
