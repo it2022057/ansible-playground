@@ -36,11 +36,18 @@
         tags:
           - edit
 
+      - name: Check if the service exists
+        shell: sudo systemctl status mailhog.service
+        register: check_service
+        failed_when: false
+        changed_when: false
+
       - name: Stop mailhog service if running
         service:
           name: mailhog
           state: stopped
         become: yes
+        when: check_service.rc == 0
       
       - name: Reload systemd daemon
         systemd:
@@ -53,7 +60,7 @@
           state: restarted
         become: yes
 
-      - name: Ensure spring service started
+      - name: Ensure mailhog service started
         service:
           name: mailhog
           state: started

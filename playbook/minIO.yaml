@@ -36,11 +36,18 @@
         tags:
           - edit
 
+      - name: Check if the service exists
+        shell: sudo systemctl status minio.service
+        register: check_service
+        failed_when: false
+        changed_when: false
+
       - name: Stop minio service if running
         service:
           name: minio
           state: stopped
-        become: yes
+        become: yes  
+        when: check_service.rc == 0
       
       - name: Reload systemd daemon
         systemd:
