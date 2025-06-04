@@ -1,0 +1,68 @@
+---
+# This file contains only the tasks to install Docker on the system
+- name: Install basic packages
+  apt:
+    name: "{{item}}"
+    state: present
+    update_cache: true
+  loop:
+    - software-properties-common
+    - curl
+    - apt-transport-https
+    - ca-certificates
+  become: yes
+
+- name: Create keyrings directory
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+  become: yes
+
+- name: Download Docker GPG key
+  get_url:
+    url: "{{ docker_gpg_url }}"
+    dest: "{{ docker_keyring_path }}"
+    mode: '0644' 
+  become: yes
+
+- name: Add Docker repository
+  shell: |
+      echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+      $(. /etc/os-release && echo ${UBUNTU_CODENAME:-$VERSION_CODENAME}) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+  args:
+    executable: /bin/bash
+  become: yes
+
+- name: Install Docker Engine and components
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-buildx-plugin
+    - docker-compose-plugin
+  become: yes
+
+- name: Start docker service
+  service:
+    name: docker
+    state: started
+    enabled: true
+  become: yes
+
+- name: Ensure docker group exists
+  group:
+    name: docker
+    state: present
+  become: yes
+
+- name: Add user to docker group
+  user:
+    name: "{{ user }}"
+    groups: docker
+    append: yes
+  become: yes
