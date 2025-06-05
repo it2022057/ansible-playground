@@ -2,9 +2,11 @@
 azure-hosts:
   hosts:
     devops-vm-1:
-      ansible_host: az-devops
+      ansible_host: jenkins-vm # Mostly used for Jenkins, but can be used for other tasks as well
     devops-vm-2:
-      ansible_host: service-vm
+      ansible_host: ansible-vm # Mostly used for Ansible tasks, but can be used for other tasks as well
+    devops-vm-3:
+      ansible_host: docker-vm # !!!!Only used for Docker tasks!!!!
 
 db-servers:
   hosts:

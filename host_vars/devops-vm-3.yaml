@@ -1,0 +1,29 @@
+# More specific variables for devops-vm-3
+public_ip: "20.91.248.188"
+
+docker_gpg_url: https://download.docker.com/linux/ubuntu/gpg
+docker_keyring_path: /etc/apt/keyrings/docker.asc
+repo_dir: "{{ ansible_user_dir }}/devops-2025"
+app_dir: "{{ repo_dir }}/ds-project-2024"
+
+app:
+  env:
+
+    server.port: "{{app_port}}"
+    spring.datasource.url: ${SPRING_DATASOURCE_URL}
+    spring.datasource.username: ${SPRING_DATASOURCE_USERNAME}
+    spring.datasource.password: ${SPRING_DATASOURCE_PASSWORD}
+    spring.jpa.properties.hibernate.dialect: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT}
+
+    spring.mail.host: ${SPRING_MAIL_HOST}
+    spring.mail.port: ${SPRING_MAIL_PORT}
+    spring.mail.username: ${SPRING_MAIL_USERNAME}
+    spring.mail.password: ${SPRING_MAIL_PASSWORD}
+    spring.mail.properties.mail.smtp.auth: ${SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH}
+    spring.mail.properties.mail.smtp.starttls.enable: false ${SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE}
+
+    minio.url: ${MINIO_URL}
+    minio.access.name: ${MINIO_ACCESS_NAME}
+    minio.access.secret: ${MINIO_ACCESS_SECRET}
+    minio.bucket.name: ${MINIO_BUCKET_NAME}
+    minio.bucket.path: "http://{{ public_ip }}:{{ minio_api_port }}/${MINIO_BUCKET_NAME}"

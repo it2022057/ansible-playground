@@ -13,9 +13,6 @@
           - install
     
     tasks:
-      - name: Debug appdir
-        ansible.builtin.debug:
-          msg: "app_dir --> {{ansible_user_dir}}"
 
       - name: Ensure git is installed
         apt:
@@ -131,6 +128,7 @@
           src: ../files/nginx.http.j2
           dest: "/etc/nginx/sites-available/reverse_proxy"
         become: yes
+        notify: Restart nginx
 
       - name: Enable my site in nginx
         file:

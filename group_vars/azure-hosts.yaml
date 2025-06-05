@@ -1,9 +1,12 @@
+# Basic variables for the Azure hosts
 app_port: 8080
-app_dir: "{{ ansible_user_dir }}/ds-project-2024"
 branch: "main"
-
+db_ip: "4.223.107.0"
 user: "{{ansible_user_id}}"
 group: "{{ansible_user_gid}}"
+
+
+app_dir: "{{ ansible_user_dir }}/ds-project-2024"
 
 mailhog_path: "{{ ansible_user_dir }}/bin"
 mailhog_version: v1.0.1
@@ -20,7 +23,7 @@ app:
     server.port: "{{app_port}}"
     spring.datasource.username: myuser
     spring.datasource.password: pass12345
-    spring.datasource.url: jdbc:mariadb://4.223.107.0:3306/mariadb
+    spring.datasource.url: "jdbc:mariadb://{{ db_ip }}:3306/mariadb"
     spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.MariaDBDialect
 
     spring.mail.host: "{{ public_ip }}"

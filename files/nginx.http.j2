@@ -1,9 +1,11 @@
 server {
     listen 80;
+    # Set the maximum body size for file uploads
     client_max_body_size 4G;
 
     server_name {{public_ip}};
 
+    # Reverse proxy root path to Spring Boot app (makes it accessible at http://<ip>/)
     location / {      
       proxy_pass http://localhost:{{app_port}};
       proxy_set_header Host $http_host;
@@ -13,33 +15,35 @@ server {
       proxy_buffering off;
     }
 
-    # location /mailhog/ {
-    #   proxy_pass http://localhost:{{mailhog_ui_port}}/;
-    #   proxy_set_header Host $host;
-    #   proxy_set_header X-Real-IP $remote_addr;
-    #   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; 
-    # }
+    # Reverse proxy http://<ip>/mailhog/ to Mailhog UI on port 8025
+    location /mailhog/ {
+      proxy_pass http://localhost:{{mailhog_ui_port}}/;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; 
+    }
 
-    # location /minio/ {
-    #   proxy_pass http://localhost:{{minio_console_port}}/;  # MinIO Console port
-    #   proxy_set_header Host $host;
-    #   proxy_set_header X-Real-IP $remote_addr;
-    #   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    # Reverse proxy http://<ip>/minio/ to MinIO Console on port 9001
+    location /minio/ {
+      proxy_pass http://localhost:{{minio_console_port}}/;  # MinIO Console port
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
-    #   proxy_http_version 1.1;
-    # 	proxy_set_header Upgrade $http_upgrade;
-    # 	proxy_set_header Connection "upgrade";
+      proxy_http_version 1.1;
+    	proxy_set_header Upgrade $http_upgrade;
+    	proxy_set_header Connection "upgrade";
 
-    #   # Redirects to the exact path i proxy from (tricks MinIO Console)
-    #   rewrite ^/minio/(.*)$ /$1 break;
+      # Redirects to the exact path i proxy from (tricks MinIO Console)
+      rewrite ^/minio/(.*)$ /$1 break;
 
-    #   # Rewrite content (e.g. HTML, JS) so that internal redirects don’t go to /
-    #   # This ensures that href="/xyz" becomes href="/minio/xyz"
-    #   sub_filter_types text/html text/javascript application/javascript;
-    #   sub_filter_once off;
-    #   sub_filter 'href="/' 'href="/minio/';
-    #   sub_filter 'src="/' 'src="/minio/';
-    # }
+      # Rewrite content (e.g. HTML, JS) so that internal redirects don’t go to /
+      # This ensures that href="/xyz" becomes href="/minio/xyz"
+      sub_filter_types text/html text/javascript application/javascript;
+      sub_filter_once off;
+      sub_filter 'href="/' 'href="/minio/';
+      sub_filter 'src="/' 'src="/minio/';
+    }
 
 }
 
