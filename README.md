@@ -1,6 +1,6 @@
 # Ansible Playground 
 
-This repository contains an Ansible-based automation environment for deploying a complete multi-component application stack on remote Microsoft Azure VMs. Specifically, the components are the following:
+This repository contains an Ansible-based automation environment for deploying a complete multi-component application stack on remote Microsoft Azure VMs. Also, it can install all the components in a docker environment using ansible with docker-compose. Specifically, the components are the following:
 
 * Spring Boot Application (main app)
 * Database (MariaDB)
@@ -54,7 +54,7 @@ or with ssh key (if you have one)
 git clone git@github.com:it2022057/ansible-playground.git
 ```
 
-## How to run
+## Ansible environment deploy
 
 * All the components of the system
 ```bash
@@ -81,26 +81,53 @@ ansible-playbook playbook/mailhog.yaml -l devops-vm-2
 ansible-playbook playbook/minIO.yaml -l devops-vm-2
 ```
 
+## Docker environment deployed with ansible
+
+* Docker compose runs in the devops-vm-3
+```bash
+ansible-playbook playbook/docker_run.yaml
+```
+
+## Results
+
+### If everything ran successfully, go to the following urls and then check for the results!!! Keep in mind we use nginx to handle incoming HTTP requests and forward them to the appropriate Docker containers (e.g., Spring Boot, MinIO, Mailhog). It acts as a reverse proxy, enabling clean and consistent URLs and port consolidation (all services behind port 80/443). So we can either access the components via their public ip's and ports or by the following url's:
+  
+* Main app page
+```bash
+http://<public_ip>
+```
+
+* Mailhog UI 
+```bash
+http://<public_ip>/mailhog/
+```
+
+* Minio console
+```bash
+http://<public_ip>/minio/
+```
 
 ## Public Ip's
 
-### If everything ran successfully, go to the public ip your vm servers have and then check for the results!!! For my project go to:
-
 * db-server
 ```bash
-http://4.223.107.0
+4.223.107.0
 ```
 
 * devops-vm-1 with all the rest of the components (except db)
 ```bash
-http://135.225.114.238
+135.225.114.238
 ```
 
 * devops-vm-2 with all the rest of the components (except db)
 ```bash
-http://20.234.5.108
+20.234.5.108
 ```
 
+* devops-vm-3 for the docker-compose deployment
+```bash
+20.91.248.188
+```
 
 ## Vagrant guide for deploying local vms
 * Vagrant install https://developer.hashicorp.com/vagrant/downloads 
@@ -165,6 +192,10 @@ vagrant halt
 * [mail module](https://docs.ansible.com/ansible/2.9/modules/mail_module.html)
 * [mysql_db module](https://docs.ansible.com/ansible/latest/collections/community/mysql/mysql_db_module.html)
 * [mysql_role module](https://docs.ansible.com/ansible/latest/collections/community/mysql/mysql_role_module.html)
+* [docker_compose module](https://docs.ansible.com/ansible/latest/collections/community/docker/docker_compose_v2_module.html)
+* [git module](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html)
+* [script module](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/script_module.html)
+* [set_fact module](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/set_fact_module.html)
 
 ## ✍️ Author
 
