@@ -1,6 +1,6 @@
 ---
   - name: Install spring boot application and all the other components in docker environment
-    hosts: azure-hosts
+    hosts: devops-vm-3
 
     tasks:
 
@@ -64,12 +64,20 @@
           # This script will free up the ports used by previous runs by stopping the services that were using them
           # It is a simple shell script that checks if the port is in use and kills the process using it
           "../files/stop_services.sh"
-          
+    
+      - name: Check if any containers are running
+        command: docker ps 
+        register: running_containers
+        changed_when: false
+        failed_when: false
+        tags:
+          - stop
 
       - name: Stop any existing containers
         community.docker.docker_compose_v2:
           project_src: "{{ repo_dir }}"
           state: absent
+        when: running_containers.stdout != ""  # Only stop if there are running containers
         tags:
           - stop
       
