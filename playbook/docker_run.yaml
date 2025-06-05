@@ -59,6 +59,13 @@
         tags:
           - install
 
+      - name: Free up all the ports from previous runs
+        script: 
+          # This script will free up the ports used by previous runs by stopping the services that were using them
+          # It is a simple shell script that checks if the port is in use and kills the process using it
+          "../files/stop_services.sh"
+          
+
       - name: Stop any existing containers
         community.docker.docker_compose_v2:
           project_src: "{{ repo_dir }}"

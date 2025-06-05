@@ -129,13 +129,13 @@
       - name: Copy nginx conf file
         template:
           src: ../files/nginx.http.j2
-          dest: "/etc/nginx/sites-available/spring"
+          dest: "/etc/nginx/sites-available/reverse_proxy"
         become: yes
 
-      - name: Enable spring site in nginx
+      - name: Enable my site in nginx
         file:
-          src: "/etc/nginx/sites-available/spring"
-          dest: "/etc/nginx/sites-enabled/spring"
+          src: "/etc/nginx/sites-available/reverse_proxy"
+          dest: "/etc/nginx/sites-enabled/reverse_proxy"
           state: link
         become: yes
         notify: Restart nginx

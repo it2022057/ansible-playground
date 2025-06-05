@@ -7,6 +7,7 @@ group: "{{ansible_user_gid}}"
 
 mailhog_path: "{{ ansible_user_dir }}/bin"
 mailhog_version: v1.0.1
+mailhog_ui_port: 8025
 smtp_port: 1025
 
 minio_download_dir: /tmp/minio.deb
@@ -33,7 +34,7 @@ app:
     minio.access.name: Q3AM3UQ867SPQQA43P2F
     minio.access.secret: zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG
     minio.bucket.name: pet-adoption-app
-    minio.bucket.path: "{{ minio.url }}/{{ minio.bucket.name }}"
+    minio.bucket.path: "${minio.url}/${minio.bucket.name}"
 
 service:
   app:
