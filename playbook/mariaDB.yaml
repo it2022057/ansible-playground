@@ -20,7 +20,7 @@
           line: 'bind-address = 0.0.0.0'
           backup: yes
         notify:
-          - restart mariaDB
+          - Restart mariaDB
         tags:
           - edit
       

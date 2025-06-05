@@ -94,6 +94,7 @@
       - debug:
           var: output
     
+    
     handlers:
     - name: Restart Docker Compose
       community.docker.docker_compose_v2:
