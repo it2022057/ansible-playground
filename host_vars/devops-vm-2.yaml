@@ -1,2 +1,3 @@
 # More specific variables for devops-vm-2
 public_ip: "20.234.5.108"
+server_name: vm2.loukidns.ip-ddns.com

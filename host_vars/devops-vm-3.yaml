@@ -1,5 +1,6 @@
 # More specific variables for devops-vm-3
 public_ip: "20.91.248.188"
+server_name: vm3.loukidns.ip-ddns.com;
 
 docker_gpg_url: https://download.docker.com/linux/ubuntu/gpg
 docker_keyring_path: /etc/apt/keyrings/docker.asc

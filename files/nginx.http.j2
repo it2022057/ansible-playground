@@ -3,9 +3,9 @@ server {
     # Set the maximum body size for file uploads
     client_max_body_size 4G;
 
-    server_name {{public_ip}};
+    server_name {{server_name}};
 
-    # Reverse proxy root path to Spring Boot app (makes it accessible at http://<ip>/)
+    # Reverse proxy root path to Spring Boot app (makes it accessible at http://<domain>/)
     location / {      
       proxy_pass http://localhost:{{app_port}};
       proxy_set_header Host $http_host;
@@ -15,7 +15,7 @@ server {
       proxy_buffering off;
     }
 
-    # Reverse proxy http://<ip>/mailhog/ to Mailhog UI on port 8025
+    # Reverse proxy http://<domain>/mailhog/ to Mailhog UI on port 8025
     location /mailhog/ {
       proxy_pass http://localhost:{{mailhog_ui_port}}/;
       proxy_set_header Host $host;
@@ -23,7 +23,7 @@ server {
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; 
     }
 
-    # Reverse proxy http://<ip>/minio/ to MinIO Console on port 9001
+    # Reverse proxy http://<domain>/minio/ to MinIO Console on port 9001
     location /minio/ {
       proxy_pass http://localhost:{{minio_console_port}}/;  # MinIO Console port
       proxy_set_header Host $host;
@@ -46,4 +46,25 @@ server {
     }
 
 }
+
+server {
+
+    listen               443 ssl;
+
+
+    ssl                  on;
+    ssl_certificate      /etc/ssl/certs/mydomain.crt; # Path to my SSL certificate
+    ssl_certificate_key  /etc/ssl/private/private.key; # Path to my SSL private key
+
+
+    server_name  {{server_name}};
+    access_log   /var/log/nginx/nging.vhost.access.log;
+    error_log    /var/log/nginx/nginx.vhost.error.log;
+    location     / {
+    root         /home/www/public_html/{{server_name}}/public/;
+    index        index.html;
+    }
+
+}
+
 
