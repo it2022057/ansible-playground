@@ -60,7 +60,7 @@
           state: restarted
         become: yes
 
-      - name: Ensure spring service started
+      - name: Ensure minio service started
         service:
           name: minio
           state: started
