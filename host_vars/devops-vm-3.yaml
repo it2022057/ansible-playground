@@ -27,4 +27,4 @@ app:
     minio.access.name: ${MINIO_ACCESS_NAME}
     minio.access.secret: ${MINIO_ACCESS_SECRET}
     minio.bucket.name: ${MINIO_BUCKET_NAME}
-    minio.bucket.path: "http://{{ public_ip }}:{{ minio_api_port }}/${MINIO_BUCKET_NAME}"
+    minio.bucket.path: "https://{{ server_name }}/${MINIO_BUCKET_NAME}"

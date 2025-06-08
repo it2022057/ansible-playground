@@ -49,6 +49,10 @@ server {
       sub_filter 'src="/' 'src="/minio/';
     }
 
+    location /pet-adoption-app/pet-photos/ {
+        proxy_pass http://localhost:{{minio_api_port}}/pet-adoption-app/pet-photos/;
+    }
+
 }
 
 server {
