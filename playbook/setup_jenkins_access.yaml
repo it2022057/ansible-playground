@@ -27,7 +27,6 @@
           name: ansible
           state: present
           update_cache: yes
-          enabled: yes
 
       # Adds the jenkins ssh key to the remote VMs authorized keys
       - name: Add public key
