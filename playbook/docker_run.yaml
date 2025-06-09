@@ -21,8 +21,8 @@
 
       - name: Clone git repo
         git:
-          repo: 'https://github.com/it2022057/devops-2025.git'  # decided to use https instead of ssh, because it is a public repository and i wanted everyone to be able to run the playbook without needing to set up SSH keys
-          dest: "{{ repo_dir }}"                                # although i could use ssh, since i added ForwardAgent=yes in my config file, but i wanted to keep it simple
+          repo: 'git@github.com:it2022057/devops-2025.git'  #  i use ssh, since i added ForwardAgent=yes in my ~/.ssh/config file 
+          dest: "{{ repo_dir }}"                            # and i have my ssh key added to the ssh-agent and GitHub
           version: "{{ branch }}"
           force: yes
           accept_hostkey: yes

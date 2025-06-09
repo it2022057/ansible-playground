@@ -1,0 +1,52 @@
+---
+  - name: Setup Jenkins environment and remote VM access
+    hosts: devops-vm-1
+    become: yes
+
+    tasks:
+    
+      - name: Ensure Docker is available
+        shell: docker --version && docker compose version
+        register: docker_version_result # Store the result (stdout, stderr, return code)
+        ignore_errors: true # Don't fail the playbook if the command fails
+      
+      # Set a fact to check if Docker is installed
+      - name: Set Docker installed fact
+        set_fact:
+          docker_installed: "{{ docker_version_result.rc == 0 }}"
+      
+      # If Docker is not installed, then install it by running the install_docker playbook
+      - name: Include install_docker playbook if Docker is not installed
+        include_tasks: install_docker.yaml
+        when: not docker_installed
+        vars:
+          user: jenkins
+
+      - name: Install Ansible
+        apt:
+          name: ansible
+          state: present
+          update_cache: yes
+          enabled: yes
+
+      # Adds the jenkins ssh key to the remote VMs authorized keys
+      - name: Add public key
+        ansible.posix.authorized_key:
+          user: azureuser
+          state: present
+          key: "{{ lookup('file', '/var/lib/jenkins/.ssh/id_rsa.pub') }}"
+
+      - name: Restart Jenkins service
+        service:
+          name: jenkins
+          state: restarted
+
+      - name: Restart Docker service
+        service:
+          name: docker
+          state: restarted
+
+      - name: Restart Ansible service
+        service:
+          name: ansible
+          state: restarted
