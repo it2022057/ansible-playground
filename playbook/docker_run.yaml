@@ -21,7 +21,8 @@
 
       - name: Clone git repo
         git:
-          repo: 'git@github.com:it2022057/devops-2025.git'  #  i use ssh, since i added ForwardAgent=yes in my ~/.ssh/config file 
+          repo: https://github.com/it2022057/devops-2025.git       
+          #repo: 'git@github.com:it2022057/devops-2025.git'  #  i use ssh, since i added ForwardAgent=yes in my ~/.ssh/config file 
           dest: "{{ repo_dir }}"                            # and i have my ssh key added to the ssh-agent and GitHub
           version: "{{ branch }}"
           force: yes
