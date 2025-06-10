@@ -13,6 +13,14 @@
           - install
     
     tasks:
+      - name: List loaded SSH keys via ssh-agent
+        shell: ssh-add -l
+        register: ssh_keys
+        ignore_errors: true
+
+      - name: Print SSH key listing result
+        debug:
+          var: ssh_keys.stdout_lines
 
       - name: Ensure git is installed
         apt:
@@ -24,9 +32,9 @@
 
       - name: Clone git repo
         git:
-          repo: https://github.com/it2022057/ds-project-2024.git  --> decided to use https instead of ssh, because it is a public repository and i wanted everyone to be able to run the playbook without needing to set up SSH keys
+          repo: https://github.com/it2022057/ds-project-2024.git   # decided to use https instead of ssh, because it is a public repository and i wanted everyone to be able to run the playbook without needing to set up SSH keys
           #repo: git@github.com:it2022057/ds-project-2024.git      # Added ForwardAgent = yes to my config file,
-          dest: "{{ app_dir }}"                                   # in order for ssh-agent to have access to my keys remotely                    
+          dest: "{{ app_dir }}"                                    # in order for ssh-agent to have access to my keys remotely                    
           version: "{{ branch }}"
           accept_hostkey: yes
           force: yes
