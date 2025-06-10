@@ -1,4 +1,5 @@
 ---
+  
   - name: Setup Jenkins environment and remote VM access
     hosts: devops-vm-1
 
@@ -6,7 +7,7 @@
 
       - name: Install Ansible, Docker
         apt:
-          name: {{item}}
+          name: "{{item}}"
           state: present
           update_cache: yes
         loop:
