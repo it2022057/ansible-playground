@@ -13,14 +13,6 @@
           - install
     
     tasks:
-      - name: List loaded SSH keys via ssh-agent
-        shell: ssh-add -l
-        register: ssh_keys
-        ignore_errors: true
-
-      - name: Print SSH key listing result
-        debug:
-          var: ssh_keys.stdout_lines
 
       - name: Ensure git is installed
         apt:
