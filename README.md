@@ -85,7 +85,7 @@ ansible-playbook playbook/minIO.yaml -l devops-vm-2
 
 * Docker compose runs in the devops-vm-3
 ```bash
-ansible-playbook playbook/docker_run.yaml --vault-password-file .vault_pass.txt
+ansible-playbook playbook/docker_run.yaml --vault-password-file ../.vault_pass.txt
 ``` 
 
 
