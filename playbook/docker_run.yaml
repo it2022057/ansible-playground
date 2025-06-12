@@ -29,6 +29,32 @@
           recursive: yes
           update: yes
 
+      - name: Decrypt SSL cert
+        copy:
+          src: ../../assets/certs/mydomain.crt.encrypted
+          dest: "{{ repo_dir }}/assets/certs/mydomain.crt"
+          decrypt: yes
+          owner: root
+          mode: '0644'
+        become: yes
+
+      - name: Decrypt private key
+        copy:
+          src: ../../assets/certs/private.key.encrypted
+          dest: "{{ repo_dir }}/assets/certs/private.key"
+          decrypt: yes
+          owner: root
+          mode: '0600'
+        become: yes
+        
+      - name: Clean up encrypted certs and use the new ones
+        file:
+          path: "{{ item }}"
+          state: absent
+        loop:
+          - "{{ repo_dir  }}/assets/certs/mydomain.crt.encrypted"
+          - "{{ repo_dir  }}/assets/certs/private.key.encrypted"
+
       # Changes application.properties to use environment variables defined and passed in the docker-compose file
       - name: "Populate application.properties"
         lineinfile:
