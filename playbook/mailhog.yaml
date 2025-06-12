@@ -78,7 +78,7 @@
         mail:
           host: "{{ public_ip }}"
           port: "{{ smtp_port }}"
-          from: noreply@gmail.com
+          from: noreply.springboot@gmail.com
           to: example@gmail.com
           subject: "Welcome to MailHog!"
           body: "This is a test email environment"
